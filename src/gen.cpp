@@ -39,7 +39,7 @@ const int MAX_N = 30;
 
 // Number of connected components
 const int MIN_COMP = 2;
-const int MAX_COMP = 4;
+const int MAX_COMP = 6;
 
 // Number of queries
 const int MIN_Q = 20;
@@ -118,7 +118,7 @@ int main(int argc, char **argv){
 
     printf("Graph\n");
     shuffle(ALL(edges), rng);
-    for(auto [a, b] : edges){
+    for(auto &[a, b] : edges){
         if(rng() & 1) swap(a, b);
         printf("%03d %03d\n", idMap[a], idMap[b]);
     }
@@ -147,12 +147,17 @@ int main(int argc, char **argv){
     }
 
     // BFS in the most natural order given the input
+    vi ord;
+    usedId.reset();
+
     printf("Thinking\n");
     for(auto [a, b] : edges){
         adjList[a].pb(b);
         adjList[b].pb(a);
+        if(!usedId[a]) usedId[a] = true, ord.pb(a);
+        if(!usedId[b]) usedId[b] = true, ord.pb(b);
     }
-    FR(i, n) if(!vis[i]) bfs(i);
+    for(int n1 : ord) if(!vis[n1]) bfs(n1);
 
     printf("Output\n");
     for(auto [p, res] : out){
