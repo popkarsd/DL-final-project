@@ -49,8 +49,8 @@ const int MAX_Q = 30;
 const int MIN_E = 0;
 const int MAX_E = 20;
 
-// Max ID. Also need to adjust %03d manually
-const int MAX_ID = 1e3;
+// Number of unique possible IDs. Also need to adjust %02d manually
+const int MAX_ID = MAX_N;
 
 int n, numComps;
 vpii edges;
@@ -66,14 +66,14 @@ void bfs(int src){
     ql = qr = 0;
     qu[qr++] = src;
     vis[src] = true;
-    printf("start %03d src %03d\n", idMap[src], idMap[src]);
+    printf("start %02d src %02d\n", idMap[src], idMap[src]);
 
     while(ql < qr){
         int n1 = qu[ql++];
         for(int n2 : adjList[n1]) if(!vis[n2]){
             vis[n2] = true;
             qu[qr++] = n2;
-            printf("%03d %03d src %03d\n", idMap[n1], idMap[n2], idMap[src]);
+            printf("%02d %02d src %02d\n", idMap[n1], idMap[n2], idMap[src]);
         }
     }
 }
@@ -120,7 +120,7 @@ int main(int argc, char **argv){
     shuffle(ALL(edges), rng);
     for(auto &[a, b] : edges){
         if(rng() & 1) swap(a, b);
-        printf("%03d %03d\n", idMap[a], idMap[b]);
+        printf("%02d %02d\n", idMap[a], idMap[b]);
     }
 
     printf("Queries\n");
@@ -143,7 +143,7 @@ int main(int argc, char **argv){
             b = comps[c2][randInt(0, SZ(comps[c2])-1)];
             out.pb({{a, b}, false});
         }
-        printf("%03d %03d\n", idMap[a], idMap[b]);
+        printf("%02d %02d\n", idMap[a], idMap[b]);
     }
 
     // BFS in the most natural order given the input
@@ -162,7 +162,7 @@ int main(int argc, char **argv){
     printf("Output\n");
     for(auto [p, res] : out){
         auto [a, b] = p;
-        printf("%03d %03d %s\n", idMap[a], idMap[b], res ? "yes" : "no");
+        printf("%02d %02d %s\n", idMap[a], idMap[b], res ? "yes" : "no");
     }
     printf("End\n");
 }
