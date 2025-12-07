@@ -33,30 +33,47 @@ ostream& operator<<(ostream &os, pair<T, U> p){return os << "(" << p.fs << ", " 
 mt19937 rng(430298584);
 int randInt(int a, int b){return uniform_int_distribution(a, b)(rng);}
 
-const int MN = 1e3;
-const int MX = 1e5;
+// Number of nodes
+const int MIN_N = 40;
+const int MAX_N = 50;
+
+// Number of connected components
+const int MIN_COMP = 2;
+const int MAX_COMP = 5;
+
+// Number of queries
+const int MIN_Q = 80;
+const int MAX_Q = 100;
+
+// Number of edges after spanning tree
+const int MIN_E = 0;
+const int MAX_E = 100;
+
+// Max ID. Also need to adjust %04d manually
+const int MAX_ID = 1e4;
+
 int n, numComps;
 vpii edges;
 vector<pair<pii, bool>> out;
-int idMap[MN];
-bitset<MX> usedId;
+int idMap[MAX_N];
+bitset<MAX_ID> usedId;
 
-vi adjList[MN];
-int qu[MN], ql, qr;
-bool vis[MN];
+vi adjList[MAX_N];
+int qu[MAX_N], ql, qr;
+bool vis[MAX_N];
 
 void bfs(int src){
     ql = qr = 0;
     qu[qr++] = src;
     vis[src] = true;
-    printf("start %05d src %05d\n", idMap[src], idMap[src]);
+    printf("start %04d src %04d\n", idMap[src], idMap[src]);
 
     while(ql < qr){
         int n1 = qu[ql++];
         for(int n2 : adjList[n1]) if(!vis[n2]){
             vis[n2] = true;
             qu[qr++] = n2;
-            printf("%05d %05d src %05d\n", idMap[n1], idMap[n2], idMap[src]);
+            printf("%04d %04d src %04d\n", idMap[n1], idMap[n2], idMap[src]);
         }
     }
 }
@@ -65,8 +82,8 @@ int main(int argc, char **argv){
     int tc = atoi(argv[1]);
     rng.seed(tc*4892 + 1290);
     // Generate main graph parameters
-    n = randInt(100, 500);
-    numComps = randInt(2, 5);
+    n = randInt(MIN_N, MAX_N);
+    numComps = randInt(MIN_COMP, MAX_COMP);
 
     // Each component gets at least 2 nodes
     // For each remaining node, randomly put it in a component
@@ -83,7 +100,7 @@ int main(int argc, char **argv){
     }
 
     // Add more random edges within components
-    int remEdges = randInt(0, n*2);
+    int remEdges = randInt(MIN_E, MAX_E);
     while(remEdges--){
         int c = randInt(0, numComps-1);
         int a = comps[c][randInt(0, SZ(comps[c])-1)];
@@ -94,7 +111,7 @@ int main(int argc, char **argv){
     // Randomly label and shuffle output
     FR(i, n){
         int id;
-        do id = randInt(0, MX-1); while(usedId[id]);
+        do id = randInt(0, MAX_ID-1); while(usedId[id]);
         idMap[i] = id;
         usedId[id] = true;
     }
@@ -103,11 +120,11 @@ int main(int argc, char **argv){
     shuffle(ALL(edges), rng);
     for(auto [a, b] : edges){
         if(rng() & 1) swap(a, b);
-        printf("%05d %05d\n", idMap[a], idMap[b]);
+        printf("%04d %04d\n", idMap[a], idMap[b]);
     }
 
     printf("Queries\n");
-    int q = randInt(100, 500);
+    int q = randInt(MIN_Q, MAX_Q);
     while(q--){
         int a, b;
 
@@ -126,7 +143,7 @@ int main(int argc, char **argv){
             b = comps[c2][randInt(0, SZ(comps[c2])-1)];
             out.pb({{a, b}, false});
         }
-        printf("%05d %05d\n", idMap[a], idMap[b]);
+        printf("%04d %04d\n", idMap[a], idMap[b]);
     }
 
     // BFS in the most natural order given the input
@@ -140,7 +157,7 @@ int main(int argc, char **argv){
     printf("Output\n");
     for(auto [p, res] : out){
         auto [a, b] = p;
-        printf("%05d %05d %s\n", idMap[a], idMap[b], res ? "yes" : "no");
+        printf("%04d %04d %s\n", idMap[a], idMap[b], res ? "yes" : "no");
     }
     printf("End\n");
 }
