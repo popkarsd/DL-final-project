@@ -5,7 +5,7 @@ g++ $parent_path/gen.cpp -O2 -std=c++20 -o $parent_path/gen
 
 mkdir $parent_path/../data
 
-for i in {1..5000}
+for i in {1..15000}
 do
     if (( i % 100 == 0)); then
         echo $i
