@@ -13,6 +13,8 @@
 !*/
 !Makefile
 
+data/
+
 # Debug files
 *.log
 *.data
