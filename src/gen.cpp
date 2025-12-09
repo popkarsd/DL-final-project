@@ -34,7 +34,7 @@ mt19937 rng(430298584);
 int randInt(int a, int b){return uniform_int_distribution(a, b)(rng);}
 
 // Number of nodes
-const int MIN_N = 20;
+const int MIN_N = 15;
 const int MAX_N = 30;
 
 // Number of connected components
