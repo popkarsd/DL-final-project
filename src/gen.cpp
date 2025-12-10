@@ -80,7 +80,7 @@ void bfs(int src){
 
 int main(int argc, char **argv){
     int tc = atoi(argv[1]);
-    rng.seed(tc*4892 + 1291);
+    rng.seed(tc*4892 + 1281);
     // Generate main graph parameters
     n = randInt(MIN_N, MAX_N);
     numComps = randInt(MIN_COMP, MAX_COMP);
